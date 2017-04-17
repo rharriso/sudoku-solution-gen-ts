@@ -1,7 +1,10 @@
 import {
   sample as _sample,
   times as _times,
-  sortedUniqBy as _sortedUniqBy
+  difference as _difference,
+  shuffle as _shuffle,
+  sortedUniqBy as _sortedUniqBy,
+  sortedUniq as _sortedUniq
 } from 'lodash';
 
 let total = 81;
@@ -97,15 +100,31 @@ class SudokuBoard {
     });
   }
 
+  serialize () {
+    return this.cells.map((c) => c.value).join('');
+  }
+
   fill () {
     if(!this.doFillCells(this.cells)) {
       console.error('Unable to fill board');
     }
   }
 
-  doFillCells(cells: SudokuCell[]) {
-    const cell = cells[0];
+  doFillCells(remainingCells: SudokuCell[]) {
+    const cell = remainingCells[0];
+    const neighborValues = _sortedUniq(cell.neighbors.map((n) => this.at(n).value ));
+    const remainingOptions = _difference(validValues, neighborValues);
 
+    for(const option of remainingOptions) {
+      cell.value = option;
+
+      // either this is the last cell, or the rest are good
+      if (remainingCells.length === 1 || this.doFillCells(remainingCells.slice(1))) {
+        return true;
+      }
+    }
+
+    cell.value = 0;
     return false;
   }
 
@@ -124,7 +143,7 @@ class SudokuBoard {
   *
   */
   at(c: coord): SudokuCell {
-    return this.cells[c.i][c.j];
+    return this.cells[this.resolvePosition(c)];
   }
 
   atIndex(index: number): SudokuCell {
@@ -137,5 +156,5 @@ class SudokuBoard {
 }
 
 let board = new SudokuBoard();
-
-board.print();
+board.fill();
+console.log(board.serialize());
