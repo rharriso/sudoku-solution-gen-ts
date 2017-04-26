@@ -9,8 +9,11 @@ import {
 
 let total = 81;
 let size = 9;
-let third = 3;
+const third = 3;
 let validValues = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+const board_count = Number(process.argv[2]);
+const all_neighbors = process.argv[3] == '--all-neighbors';
 
 /**
 *
@@ -104,6 +107,12 @@ class SudokuBoard {
     return this.cells.map((c) => c.value).join('');
   }
 
+  clear () {
+    for(const cell of this.cells) {
+      cell.value = 0;
+    }
+  }
+
   fill () {
     if(!this.doFillCells(this.cells)) {
       console.error('Unable to fill board');
@@ -155,6 +164,13 @@ class SudokuBoard {
   }
 }
 
+
 let board = new SudokuBoard();
-board.fill();
-console.log(board.serialize());
+let output = '';
+console.log(process.argv)
+
+_times(board_count, () => {
+  board.clear();
+  board.fill();
+  output += board.serialize() + '\n';
+});
