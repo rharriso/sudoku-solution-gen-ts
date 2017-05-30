@@ -12,8 +12,8 @@ let size = 9;
 const third = 3;
 let validValues = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-const board_count = Number(process.argv[2]);
-const all_neighbors = process.argv[3] == '--all-neighbors';
+const board_count = 10000;//jNumber(process.argv[2]);
+const all_neighbors = false;//prkocess.argv[3] == '--all-neighbors';
 
 /**
 *
@@ -167,10 +167,17 @@ class SudokuBoard {
 
 let board = new SudokuBoard();
 let output = '';
-console.log(process.argv)
+let start = Date.now();
 
-_times(board_count, () => {
+
+for(let i = 0; i < board_count; i++) {
   board.clear();
   board.fill();
   output += board.serialize() + '\n';
-});
+}
+
+const duration = Date.now() - start;
+console.log(`time: ${duration}`);
+console.log(`output size: ${output.length}`);
+console.log(`last board: ${board.serialize()}`);
+console.log(`boards per second: ${1000 * board_count / duration }`);
