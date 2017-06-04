@@ -12,7 +12,7 @@ let size = 9;
 const third = 3;
 let validValues = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-const board_count = 10000;//jNumber(process.argv[2]);
+const board_count = 10;//jNumber(process.argv[2]);
 const all_neighbors = false;//prkocess.argv[3] == '--all-neighbors';
 
 /**
