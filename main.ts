@@ -114,13 +114,13 @@ class SudokuBoard {
   }
 
   fill () {
-    if(!this.doFillCells(this.cells)) {
+    if(!this.doFillCells(0)) {
       console.error('Unable to fill board');
     }
   }
 
-  doFillCells(remainingCells: SudokuCell[]) {
-    const cell = remainingCells[0];
+  doFillCells(index: number) {
+    const cell = this.cells[index];
     const neighborValues = _sortedUniq(cell.neighbors.map((n) => this.at(n).value ));
     const remainingOptions = _difference(validValues, neighborValues);
 
@@ -128,7 +128,7 @@ class SudokuBoard {
       cell.value = option;
 
       // either this is the last cell, or the rest are good
-      if (remainingCells.length === 1 || this.doFillCells(remainingCells.slice(1))) {
+      if (index === this.cells.length - 1 || this.doFillCells(index + 1)) {
         return true;
       }
     }

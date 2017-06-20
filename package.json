@@ -12,7 +12,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@types/node": "^7.0.12"
+    "@types/node": "^7.0.12",
+    "lodash": "^4.17.4"
   },
   "devDependencies": {
     "browserify": "^14.4.0",
