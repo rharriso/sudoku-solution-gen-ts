@@ -35,19 +35,19 @@ class SudokuCell {
     this.position = position;
     this.value = 0;
 
-    // identify cell neighbors
+    // identify block top left
     const iBase = Math.floor(position.i / third) * third;
     const jBase = Math.floor(position.j / third) * third;
-    const cellNeighbors = [];
+
+    const blockNeighbors = [];
     _times(size, (index: number) => {
       const i = Math.floor(index / third) + iBase;
       const j = (index % third) + jBase;
 
       if(i !== position.i || j !== position.j) {
-        cellNeighbors.push({i, j});
+        blockNeighbors.push({i, j});
       }
     });
-
 
     // identify row neighbors
     const rowNeighbors = _times(size, (i) => {
@@ -65,7 +65,7 @@ class SudokuCell {
     this.neighbors = _sortedUniqBy([
       ...rowNeighbors,
       ...colNeighbors,
-      ...cellNeighbors
+      ...blockNeighbors
     ], (c) => `${c.i}:${c.j}`);
   }
 }
